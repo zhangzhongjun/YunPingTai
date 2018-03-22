@@ -1,3 +1,4 @@
+# 安装docker、kubeadm、kubelet、kubectl
 For all machine but master
 ## Installing docker
 ```cmd
@@ -8,7 +9,7 @@ yum install -y docker
 systemctl enable docker && systemctl start docker
 ```
 ## Installing kubeadm, kubelet and kubectl
-### 更改/etc/yum.repos.d/kubernetes.repo，配置到阿里云的下载地址
+### 更改/etc/yum.repos.d/kubernetes.repo，配置到阿里云的yum源
 ```cmd
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -20,13 +21,14 @@ repo_gpgcheck=1
 gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 EOF
 ```
-### 关闭防火墙、安装kubelet kubeadm kubectl、开启服务
+### 关闭防火墙、安装kubelet kubeadm kubectl、开启kubelet服务
 ```cmd
 setenforce 0
 yum install -y kubelet kubeadm kubectl
 systemctl enable kubelet && systemctl start kubelet
 ```
 ## seting network
+设定/etc/sysctl.d/k8s.conf的系统参数
 ```cmd
 cat <<EOF >  /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
