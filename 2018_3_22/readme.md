@@ -75,3 +75,13 @@ sed -i "s/cgroup-driver=systemd/cgroup-driver=cgroupfs/g" /etc/systemd/system/ku
 systemctl daemon-reload
 systemctl restart kubelet
 ```
+## 使用脚本文件
+```cmd
+curl https://raw.githubusercontent.com/RuiYunLab/YunPingTai/master/2018_3_22/3_22.sh?token=AgSLI3ojhINsCOwpE86RQcq6mCfK_tpLks5avO3DwA%3D%3D -o /root/3_22.sh
+```
+```cmd
+chmod +x ./3_22.sh
+```
+```cmd
+./3_22.sh
+```
