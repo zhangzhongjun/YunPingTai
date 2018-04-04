@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: 你的项目的名字
+spec:
+  containers:
+  - name: 你的项目的名字
+    image: 192.168.12.109/smart/ubuntu:你的项目的名字
+    # Just spin & wait forever
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "while true; do sleep 30; done;" ]
