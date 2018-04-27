@@ -1,32 +1,41 @@
 # 安装docker、kubeadm、kubelet、kubectl
-For all machine but master
+> 今日任务：为所有的结点安装docker、kubeadm、kubelet、kubectl
+
 ## Installing docker
 ```cmd
-yum install -y docker
+[root@masterNode ~]# yum install -y docker
 ```
+
 ## 开启docker的服务
 ```cmd
-systemctl enable docker && systemctl start docker
+[root@masterNode ~]# systemctl enable docker && systemctl start docker
 ```
+
 ## Installing kubeadm, kubelet and kubectl
+kubeadm 是Kubernetes官方推出的快速部署Kubernetes集群工具，其思路是将Kubernetes相关服务容器化(Kubernetes静态Pod)以简化部署
+kubelet 是
+kubectl 是管理集群的命令
 ### 更改/etc/yum.repos.d/kubernetes.repo，配置到阿里云的yum源
-```cmd
-cat <<EOF > /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
-enabled=1
-gpgcheck=1
-repo_gpgcheck=1
-gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
-EOF
+```bash
+# 下面这句话的意思是，向kubernentes.repo中写入内容，（删除原始内容），并在输入EOF之后停止
+[root@masterNode ~]# cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+> [kubernetes]
+> name=Kubernetes
+> baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+> enabled=1
+> gpgcheck=1
+> repo_gpgcheck=1
+> gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+> EOF
 ```
+
 ### 关闭防火墙、安装kubelet kubeadm kubectl、开启kubelet服务
 ```cmd
 setenforce 0
 yum install -y kubelet kubeadm kubectl
 systemctl enable kubelet && systemctl start kubelet
 ```
+
 ## seting network
 设定/etc/sysctl.d/k8s.conf的系统参数
 ```cmd
@@ -40,7 +49,8 @@ EOF
 sysctl --system
 ```
 
-## Configure cgroup driver used by kubelet on Master Node
+## 在master node上使用kubelet配置cgroup驱动
+
 ### 查询Cgroup Driver
 ```cmd
 [root@masterNode ~]# docker info | grep -i cgroup
@@ -50,6 +60,7 @@ Output:
 WARNING: You're not using the default seccomp profile
 <u>Cgroup Driver: systemd</u>
 ```
+
 ### 检查配置文件，要求第11行要和上面的下划线的部分保持一致
 ```cmd
 [root@masterNode ~]# cat /etc/systemd/system/kubelet.service.d/10-kubeadm.conf

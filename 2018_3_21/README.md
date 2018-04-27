@@ -1,4 +1,6 @@
 ## 2018/3/21
+> 今日任务：1. 为所有结点，将源配置为西电源 2. 为所有结点安装vim
+
 系统是centos7
 登录master
 ```cmd
@@ -31,7 +33,7 @@ mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
 ```
 2. 下载西电源的配置文件
 ```cmd
-curl https://raw.githubusercontent.com/RuiYunLab/YunPingTai/master/CentOS-Base.repo -o /etc/yum.repos.d/CentOS-Base.repo
+curl https://raw.githubusercontent.com/RuiYunLab/YunPingTai/master/2018_3_21/CentOS-Base.repo -o /etc/yum.repos.d/CentOS-Base.repo
 ```
 3.运行 sudo yum makecache 生成缓存
 ```cmd

@@ -3,6 +3,24 @@
 ## 网络拓扑图
 ![网络拓扑图](imgs/网络拓扑图.png)
 
+## 主机名
+```bash
+[root@hostname ~]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.12.1 masternode
+192.168.12.101 pod1
+192.168.12.102 pod2
+192.168.12.103 pod3
+192.168.12.104 pod4
+192.168.12.105 pod5
+192.168.12.106 pod6
+192.168.12.107 pod7
+192.168.12.108 pod8
+192.168.12.109 pod9
+192.168.12.1 smart.com
+```
+
 ## 常用命令
 1. 登录master node
 ```bash
@@ -61,5 +79,5 @@ Server:
 ```
 
 ## 参考文献
-[主要参考]https://jicki.me/2017/12/20/kubernetes-1.9-ipvs/#%E9%85%8D%E7%BD%AE-kubelet
-[次要参考，安装顺序是这个教程的]https://github.com/opsnull/follow-me-install-kubernetes-cluster
+[主要参考](https://jicki.me/2017/12/20/kubernetes-1.9-ipvs/#%E9%85%8D%E7%BD%AE-kubelet)
+[次要参考，安装顺序是这个教程的](https://github.com/opsnull/follow-me-install-kubernetes-cluster)
