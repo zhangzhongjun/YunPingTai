@@ -80,4 +80,7 @@ Server:
 
 ## 参考文献
 [主要参考](https://jicki.me/2017/12/20/kubernetes-1.9-ipvs/#%E9%85%8D%E7%BD%AE-kubelet)
+
 [次要参考，安装顺序是这个教程的](https://github.com/opsnull/follow-me-install-kubernetes-cluster)
+
+https://jicki.me/kubernetes/2018/04/23/kubernetes-1.10.1.html
