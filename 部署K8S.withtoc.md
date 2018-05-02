@@ -1,5 +1,5 @@
 
-* [部署K8S](#部署K8S)
+* [部署K8S](#部署k8s)
 
 	* [环境说明](#环境说明)
 
@@ -17,17 +17,17 @@
 
 		* [验证 etcd 集群状态](#验证-etcd-集群状态)
 
-	* [配置 Flannel 网络](#配置-Flannel-网络)
+	* [配置 Flannel 网络](#配置-flannel-网络)
 
-		* [安装&配置 Flannel](#安装&配置-Flannel)
+		* [安装&配置 Flannel](#安装&配置-flannel)
 
-		* [配置 Flannel](#配置-Flannel)
+		* [配置 Flannel](#配置-flannel)
 
 		* [启动 flannel](#启动-flannel)
 
 		* [查看 flannel 验证网络](#查看-flannel-验证网络)
 
-	* [配置 Kubernetes 集群](#配置-Kubernetes-集群)
+	* [配置 Kubernetes 集群](#配置-kubernetes-集群)
 
 		* [组件安装](#组件安装)
 
@@ -63,11 +63,11 @@
 
 		* [启动 kube-proxy](#启动-kube-proxy)
 
-		* [Node 端配置——Nginx](#Node-端配置——Nginx)
+		* [Node 端配置——Nginx](#node-端配置——nginx)
 
 	* [安装docker](#安装docker)
 
-	* [配置CoreDNS](#配置CoreDNS)
+	* [配置CoreDNS](#配置coredns)
 
 		* [下载yaml文件](#下载yaml文件)
 
