@@ -11,59 +11,59 @@
 
 		* [生成etcd密钥](#生成etcd密钥)
 
-		* [修改 etcd配置](#修改 etcd配置)
+		* [修改etcd配置](#修改etcd配置)
 
-		* [启动 etcd](#启动 etcd)
+		* [启动etcd](#启动etcd)
 
-		* [验证 etcd 集群状态](#验证 etcd 集群状态)
+		* [验证etcd集群状态](#验证etcd集群状态)
 
-	* [配置 Flannel 网络](#配置 Flannel 网络)
+	* [配置Flannel网络](#配置Flannel网络)
 
-		* [安装&配置 Flannel](#安装&配置 Flannel)
+		* [安装&配置Flannel](#安装&配置Flannel)
 
-		* [配置 Flannel](#配置 Flannel)
+		* [配置Flannel](#配置Flannel)
 
-		* [启动 flannel](#启动 flannel)
+		* [启动flannel](#启动flannel)
 
-		* [查看 flannel 验证网络](#查看 flannel 验证网络)
+		* [查看flannel验证网络](#查看flannel验证网络)
 
-	* [配置 Kubernetes 集群](#配置 Kubernetes 集群)
+	* [配置Kubernetes集群](#配置Kubernetes集群)
 
 		* [组件安装](#组件安装)
 
 		* [创建admin证书](#创建admin证书)
 
-		* [配置 kubectl kubeconfig 文件](#配置 kubectl kubeconfig 文件)
+		* [配置kubectlkubeconfig文件](#配置kubectlkubeconfig文件)
 
-		* [创建 kubernetes 证书](#创建 kubernetes 证书)
+		* [创建kubernetes证书](#创建kubernetes证书)
 
-		* [生成 kubernetes 证书和私钥](#生成 kubernetes 证书和私钥)
+		* [生成kubernetes证书和私钥](#生成kubernetes证书和私钥)
 
-		* [配置 kube-apiserver](#配置 kube-apiserver)
+		* [配置kube-apiserver](#配置kube-apiserver)
 
-		* [启动 kube-apiserver](#启动 kube-apiserver)
+		* [启动kube-apiserver](#启动kube-apiserver)
 
-		* [配置 kube-controller-manager](#配置 kube-controller-manager)
+		* [配置kube-controller-manager](#配置kube-controller-manager)
 
-		* [启动 kube-controller-manager](#启动 kube-controller-manager)
+		* [启动kube-controller-manager](#启动kube-controller-manager)
 
-		* [配置 kube-scheduler](#配置 kube-scheduler)
+		* [配置kube-scheduler](#配置kube-scheduler)
 
-		* [启动 kube-scheduler](#启动 kube-scheduler)
+		* [启动kube-scheduler](#启动kube-scheduler)
 
-		* [配置 kubelet](#配置 kubelet)
+		* [配置kubelet](#配置kubelet)
 
-		* [配置 kube-proxy](#配置 kube-proxy)
+		* [配置kube-proxy](#配置kube-proxy)
 
-		* [生成 kube-proxy 证书和私钥](#生成 kube-proxy 证书和私钥)
+		* [生成kube-proxy证书和私钥](#生成kube-proxy证书和私钥)
 
-		* [创建 kube-proxy kubeconfig 文件](#创建 kube-proxy kubeconfig 文件)
+		* [创建kube-proxykubeconfig文件](#创建kube-proxykubeconfig文件)
 
-		* [创建 kube-proxy.service 文件](#创建 kube-proxy.service 文件)
+		* [创建kube-proxy.service文件](#创建kube-proxy.service文件)
 
-		* [启动 kube-proxy](#启动 kube-proxy)
+		* [启动kube-proxy](#启动kube-proxy)
 
-		* [Node 端配置——Nginx](#Node 端配置——Nginx)
+		* [Node端配置——Nginx](#Node端配置——Nginx)
 
 	* [安装docker](#安装docker)
 
@@ -79,13 +79,16 @@
 
 		* [下载文件](#下载文件)
 
-		* [导入 docker images](#导入 docker images)
+		* [导入dockerimages](#导入dockerimages)
 
-		* [修改 harbor.cfg 文件](#修改 harbor.cfg 文件)
+		* [修改harbor.cfg文件](#修改harbor.cfg文件)
 
-		* [加载和启动 harbor 镜像](#加载和启动 harbor 镜像)
+		* [加载和启动harbor镜像](#加载和启动harbor镜像)
 # 部署K8S
 
+* [环境说明](#环境说明)
+* [安装配置etcd](#安装配置etcd)
+  * [etcd安装](#etcd安装)
 
 
 ## 环境说明
