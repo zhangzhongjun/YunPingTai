@@ -1,6 +1,10 @@
 # 部署K8S
-[TOC]
-##环境说明
+
+[环境说明](## 环境说明)
+[安装配置etcd](## 安装配置etcd)
+
+
+## 环境说明
 masternode：192.168.12.1
 pods：192.168.12.101-109
 ```bash
@@ -18,15 +22,15 @@ pods：192.168.12.101-109
 192.168.12.109 pod9
 192.168.12.1 smart.com
 ```
-##安装配置etcd
-###etcd安装
+## 安装配置etcd
+### etcd安装
 ```bash
 wget https://github.com/coreos/etcd/releases/download/v3.2.11/etcd-v3.2.11-linux-amd64.tar.gz
 tar zxvf etcd-v3.2.11-linux-amd64.tar.gz
 cd etcd-v3.2.11-linux-amd64
 mv etcd  etcdctl /usr/bin/
 ```
-###创建etcd证书
+### 创建etcd证书
 ```bash
 cd /opt/ssl/
 vi etcd-csr.json
@@ -60,7 +64,7 @@ vi etcd-csr.json
     ]
 }
 ```
-###生成etcd密钥
+### 生成etcd密钥
 ```bash
 # 生成密钥
 /opt/local/cfssl/cfssl gencert -ca=/opt/ssl/ca.pem \
@@ -86,7 +90,7 @@ scp etcd*.pem 192.168.12.107:/etc/kubernetes/ssl/
 scp etcd*.pem 192.168.12.108:/etc/kubernetes/ssl/
 scp etcd*.pem 192.168.12.109:/etc/kubernetes/ssl/
 ```
-###修改 etcd配置
+### 修改 etcd配置
 ```bash
 # 部署在所有主机上
 # 授予修改权限
@@ -174,14 +178,14 @@ WantedBy=multi-user.target
 ```bash
 # etc3-etc10 以此类推
 ```
-###启动 etcd
+### 启动 etcd
 ```bash
 systemctl daemon-reload
 systemctl enable etcd
 systemctl start etcd
 systemctl status etcd
 ```
-###验证 etcd 集群状态
+### 验证 etcd 集群状态
 ```bash
 etcdctl --endpoints= https://192.168.12.101:2379,https://192.168.12.101:2379,https://192.168.12.102:2379,https://192.168.12.103:2379,https://192.168.12.104:2379,https://192.168.12.105:2379,https://192.168.12.106:2379,https://192.168.12.107:2379, https://192.168.12.108:2379,https://192.168.12.109:2379\
 --cert-file=/etc/kubernetes/ssl/etcd.pem \
@@ -189,10 +193,10 @@ etcdctl --endpoints= https://192.168.12.101:2379,https://192.168.12.101:2379,htt
 --key-file=/etc/kubernetes/ssl/etcd-key.pem \
 cluster-health
 ```
-##配置 Flannel 网络
+## 配置 Flannel 网络
 kubernetes 要求集群内各节点能通过 Pod 网段互联互通，本章节介绍使用 Flannel 在所有节点 (Master、Node) 上创建互联互通的 Pod 网段的步骤。
 
-###安装&配置 Flannel 
+### 安装&配置 Flannel 
 ```bash
 rpm -ivh flannel-0.9.1-1.x86_64.rpm
 # 或
@@ -201,7 +205,7 @@ wget https://github.com/coreos/flannel/releases/download/v0.7.1/flannel-v0.7.1-l
 tar -xzvf flannel-v0.7.1-linux-amd64.tar.gz -C flannel
 sudo cp flannel/{flanneld,mk-docker-opts.sh} /root/local/bin
 ```
-###配置 Flannel
+### 配置 Flannel
 
 ```bash
 # 配置 flannel， 由于我们docker更改了 docker.service.d 的路径， 所以这里把 flannel.conf 的配置拷贝到 这个目录去
@@ -235,7 +239,7 @@ FLANNEL_ETCD_ENDPOINTS=" https://192.168.12.101:2379,https://192.168.12.101:2379
 # 配置为上面的路径 flannel/network
 FLANNEL_ETCD_PREFIX="/flannel/network"
 ```
-###启动 flannel
+### 启动 flannel
 
 ```bash
 # 启动 flannel 
@@ -250,7 +254,7 @@ systemctl daemon-reload
 systemctl restart kubelet
 systemctl status kubelet
 ```
-###查看 flannel 验证网络
+### 查看 flannel 验证网络
 ```bash
  ifconfig
  #查看  docker0 网络 是否已经更改为配置IP网段
@@ -268,13 +272,13 @@ systemctl status kubelet
 kubectl get pods -o wide
 kubectl get svc -o wide 
 ```
-##配置 Kubernetes 集群
-*	kubectl 安装在所有需要进行操作的机器上
-		Master 需要部署 kube-apiserver , kube-scheduler , kube-controller-manager 这三个组件。 
-		kube-scheduler 作用是调度pods分配到那个node里，简单来说就是资源调度。 
-		同时只能有一个 kube-scheduler、kube-controller-manager 进程处于工作状态，如果运行多个，则需要通过选举产生一个 leader；
-		kube-controller-manager 作用是 对 deployment controller , replication controller, endpoints controller, namespace controller, and serviceaccounts controller等等的循环控制，与kube-apiserver交互。
-### 组件安装
+## 配置 Kubernetes 集群
+*  kubectl 安装在所有需要进行操作的机器上
+   Master 需要部署 kube-apiserver , kube-scheduler , kube-controller-manager 这三个组件。 
+   	kube-scheduler 作用是调度pods分配到那个node里，简单来说就是资源调度。 
+   	同时只能有一个 kube-scheduler、kube-controller-manager 进程处于工作状态，如果运行多个，则需要通过选举产生一个 leader；
+   	kube-controller-manager 作用是 对 deployment controller , replication controller, endpoints controller, namespace controller, and serviceaccounts controller等等的循环控制，与kube-apiserver交互。
+###  组件安装
 ```bash
 cd /tmp
 wget https://dl.k8s.io/v1.9.0/kubernetes-server-linux-amd64.tar.gz
@@ -284,7 +288,7 @@ cp -r server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler,kubectl}
 scp server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler,kubectl,kube-proxy,kubelet} 192.168.12.1:/usr/local/bin/
 scp server/bin/{kube-proxy,kubelet} 192.168.12.101:/usr/local/bin/
 ```
-###创建admin证书
+### 创建admin证书
 ```bash
 cd /opt/ssl/
 vi admin-csr.json
@@ -321,7 +325,7 @@ admin.csr  admin-csr.json  admin-key.pem  admin.pem
 cp admin*.pem /etc/kubernetes/ssl/
 scp admin*.pem 192.168.12.1:/etc/kubernetes/ssl/
 ```
-###配置 kubectl kubeconfig 文件
+### 配置 kubectl kubeconfig 文件
 ```bash
 # 配置 kubernetes 集群
 kubectl config set-cluster kubernetes \
@@ -340,7 +344,7 @@ kubectl config set-context kubernetes \
   --user=admin
 kubectl config use-context kubernetes
 ```
-### 创建 kubernetes 证书
+###  创建 kubernetes 证书
 ```bash
 # 这里 hosts 字段中 三个 IP 分别为 127.0.0.1 本机， 192.168.12.1为 Master 的IP，多个Master需要写多个。10.254.0.1 为 kubernetes SVC 的 IP， 一般是 部署网络的第一个IP , 如: 10.254.0.1 ， 在启动完成后，我们使用   kubectl get svc ， 就可以查看到
 cd /opt/ssl
@@ -373,7 +377,7 @@ vi kubernetes-csr.json
   ]
 }
 ```
-###生成 kubernetes 证书和私钥
+### 生成 kubernetes 证书和私钥
 ```bash
 /opt/local/cfssl/cfssl gencert -ca=/etc/kubernetes/ssl/ca.pem \
   -ca-key=/etc/kubernetes/ssl/ca-key.pem \
@@ -393,7 +397,7 @@ ls -lt kubernetes*
 cp kubernetes*.pem /etc/kubernetes/ssl/
 scp kubernetes*.pem 192.168.12.1:/etc/kubernetes/ssl/
 ```
-###配置 kube-apiserver
+### 配置 kube-apiserver
 ```bash
 # 自定义 系统 service 文件一般存于 /etc/systemd/system/ 下
 # 配置为 各自的本地 IP
@@ -446,14 +450,14 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 
 ```
-###启动 kube-apiserver
+### 启动 kube-apiserver
 ```bash
 systemctl daemon-reload
 systemctl enable kube-apiserver
 systemctl start kube-apiserver
 systemctl status kube-apiserver
 ```
-###配置 kube-controller-manager
+### 配置 kube-controller-manager
 ```bash
 # 创建 kube-controller-manager.service 文件
 vi /etc/systemd/system/kube-controller-manager.service
@@ -481,14 +485,14 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 ```
-###启动 kube-controller-manager
+### 启动 kube-controller-manager
 ```bash
 systemctl daemon-reload
 systemctl enable kube-controller-manager
 systemctl start kube-controller-manager
 systemctl status kube-controller-manager
 ```
-###配置 kube-scheduler
+### 配置 kube-scheduler
 ```bash
 # 创建 kube-cheduler.service 文件
 vi /etc/systemd/system/kube-scheduler.service
@@ -506,7 +510,7 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 ```
-###启动 kube-scheduler
+### 启动 kube-scheduler
 ```bash
 systemctl daemon-reload
 systemctl enable kube-scheduler
@@ -517,7 +521,7 @@ systemctl status kube-scheduler
 # 验证Master节点
 kubectl get componentstatuses
 ```
-###配置 kubelet
+### 配置 kubelet
 ```bash 
 #部署节点
 #先创建认证请求 只需创建一次就可以
@@ -604,7 +608,7 @@ kubectl get csr | grep Pending | awk '{print $1}' | xargs kubectl certificate ap
 # 验证 nodes
 kubectl get nodes
 ```
-###配置 kube-proxy
+### 配置 kube-proxy
 ```bash
 # 创建 kube-proxy 证书
 cd /opt/ssl
@@ -627,7 +631,7 @@ vi kube-proxy-csr.json
   ]
 } 
 ```
-###生成 kube-proxy 证书和私钥
+### 生成 kube-proxy 证书和私钥
 ```bash
 /opt/local/cfssl/cfssl gencert -ca=/etc/kubernetes/ssl/ca.pem \
   -ca-key=/etc/kubernetes/ssl/ca-key.pem \
@@ -651,7 +655,7 @@ scp kube-proxy*.pem 192.168.12.107:/etc/kubernetes/ssl/
 scp kube-proxy*.pem 192.168.12.108:/etc/kubernetes/ssl/
 scp kube-proxy*.pem 192.168.12.109:/etc/kubernetes/ssl/
 ```
-###创建 kube-proxy kubeconfig 文件
+### 创建 kube-proxy kubeconfig 文件
 ```bash
 # 配置集群
 kubectl config set-cluster kubernetes \
@@ -691,7 +695,7 @@ scp kube-proxy.kubeconfig 192.168.12.107:/etc/kubernetes/
 scp kube-proxy.kubeconfig 192.168.12.108:/etc/kubernetes/
 scp kube-proxy.kubeconfig 192.168.12.109:/etc/kubernetes/
 ```
-###创建 kube-proxy.service 文件
+### 创建 kube-proxy.service 文件
 ```bash
 # 创建 kube-proxy 目录
 mkdir -p /var/lib/kube-proxy
@@ -723,7 +727,7 @@ LimitNOFILE=65536
 [Install]
 WantedBy=multi-user.target
 ```
-###启动 kube-proxy
+### 启动 kube-proxy
 ```bash
 systemctl daemon-reload
 systemctl enable kube-proxy
@@ -734,7 +738,7 @@ systemctl status kube-proxy
 # 检查  ipvs
 ipvsadm -L -n
 ```
-###Node 端配置——Nginx
+### Node 端配置——Nginx
 单 Node 部分 需要部署的组件有 docker calico kubelet kube-proxy 这几个组件。 Node 节点 基于 Nginx 负载 API 做 Master HA
 ```
 # 发布证书 ALL node
@@ -817,7 +821,7 @@ systemctl status nginx-proxy
 # 配置Kubelet.service & kube-proxy.service文件（见前）
 ```
 
-##安装docker
+## 安装docker
 ```bash
 # 更改docker配置
 vi usr/lib/systemd/system/docker.service
@@ -913,8 +917,8 @@ WantedBy=multi-user.target
 
 ```
 
-##配置CoreDNS
-###下载yaml文件
+## 配置CoreDNS
+### 下载yaml文件
 ```bash
 wget https://raw.githubusercontent.com/coredns/deployment/master/kubernetes/coredns.yaml.sed
 mv coredns.yaml.sed coredns.yaml
@@ -1066,7 +1070,7 @@ spec:
     port: 53
 protocol: TCP
 ```
-###导入yaml文件
+### 导入yaml文件
 ```bash
 # kubectl apply -f coredns.yaml 
 serviceaccount "coredns" created
@@ -1076,7 +1080,7 @@ configmap "coredns" created
 deployment "coredns" created
 service "coredns" created
 ```
-###查看kubedns服务
+### 查看kubedns服务
 ```bash
 #kubectl get pod,svc -n kube-system
 NAME                                       READY     STATUS    RESTARTS   AGE
@@ -1093,8 +1097,8 @@ svc/kubernetes-dashboard   ClusterIP   10.254.37.7     <none>        443/TCP    
 svc/monitoring-grafana     ClusterIP   10.254.58.119   <none>        80/TCP          26d
 svc/monitoring-influxdb    ClusterIP   10.254.63.93    <none>        8086/TCP        26d
 ```
-##部署harbor私有仓库
-###下载文件
+## 部署harbor私有仓库
+### 下载文件
 
 ```bash
 #从 docker compose 发布页面下载最新的 docker-compose 二进制文件
@@ -1107,7 +1111,7 @@ wget  --continue https://github.com/vmware/harbor/releases/download/v1.1.0/harbo
 tar -xzvf harbor-offline-installer-v1.1.0.tgz
 cd harbor
 ```
-###导入 docker images
+### 导入 docker images
 ```bash
 #导入离线安装包中 harbor 相关的 docker images：、
 docker load -i harbor.v1.1.0.tar.gz
@@ -1148,7 +1152,7 @@ EOF
 #hosts 字段指定授权使用该证书的当前部署节点 IP，如果后续使用域名访问 harbor则还需要添加域名；
 
 
-###生成 harbor 证书和私钥：
+### 生成 harbor 证书和私钥：
 ​```bash
 cfssl gencert -ca=/etc/kubernetes/ssl/ca.pem \
   -ca-key=/etc/kubernetes/ssl/ca-key.pem \
@@ -1160,7 +1164,7 @@ sudo mkdir -p /etc/harbor/ssl
 sudo mv harbor*.pem /etc/harbor/ssl
 rm harbor.csr  harbor-csr.json
 ```
-###修改 harbor.cfg 文件
+### 修改 harbor.cfg 文件
 ```bash
 diff harbor.cfg.orig harbor.cfg
 5c5
@@ -1178,7 +1182,7 @@ diff harbor.cfg.orig harbor.cfg
 > ssl_cert = /etc/harbor/ssl/harbor.pem
 > ssl_cert_key = /etc/harbor/ssl/harbor-key.pem
 ```
-###加载和启动 harbor 镜像
+### 加载和启动 harbor 镜像
 ```bash
 $ ./install.sh
 [Step 0]: checking installation environment ...
