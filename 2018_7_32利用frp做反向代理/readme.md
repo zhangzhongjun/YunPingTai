@@ -80,7 +80,7 @@ server_port = 7000
 [web]
 type = http
 local_port = 80
-custom_domains = www.yourdomain.com
+custom_domains = www.zzj.red
 ```
 
 ## frps.ini
@@ -90,6 +90,8 @@ custom_domains = www.yourdomain.com
 bind_port = 7000
 vhost_http_port = 8080
 ```
+
+访问 zzj.red:8080 即可获得内网提供的网页
 
 
 # 参考文献
